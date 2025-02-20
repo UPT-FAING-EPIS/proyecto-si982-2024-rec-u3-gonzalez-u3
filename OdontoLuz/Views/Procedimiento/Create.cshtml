@@ -1,0 +1,159 @@
+﻿@model OdontoLuz.Models.Procedimiento
+@{
+    var codigo = ViewBag.otrousuario;
+
+    if (codigo == 1)
+    {
+        ViewBag.Title = "Create";
+    }
+    else {
+
+        Layout = "~/Views/Shared/_Layout2.cshtml";
+    }
+    OdontoLuz.Models.Usuario usuarios = new OdontoLuz.Models.Usuario();
+    var usuario = usuarios.ObtenerDatos((string)Session["nombreusuario"]);
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-18">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Nuevo Procedimiento</h6>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Edit", "Procedimiento", FormMethod.Post))
+            {
+                @Html.HiddenFor(x => x.Id_Procedimiento)
+
+                @Html.HiddenFor(x => x.Id_Usuario, new { @class = "form-control", @Value= usuario.Id_Usuario })
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label>Fecha</label>
+                                @Html.TextBoxFor(x => x.Fecha, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control form-control-sm input-validar", id = "fechaInput",@readonly = "readonly" })
+                                @Html.ValidationMessageFor(x => x.Fecha, null, new { @class = "label label-danger" })
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label>Nro. Ticket</label>
+                                @Html.TextBoxFor(x => x.NroTicket, new { @class = "form-control form-control-sm input-validar text-uppercase", autocomplete = "off", placeholder = "B00-00000000" })
+                                @* @Html.ValidationMessageFor(x => x.Nombres, null, new { @class = "label label-danger" })*@
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label>Nro. Historia</label>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(x => x.Id_HistoriaClinica, new { @class = "form-control form-control-sm input-validar", autocomplete = "off", placeholder = "00000000", id = "txtNroHistoria", @readonly = "readonly" })
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-dark btn-sm mr-3" data-toggle="modal" data-target="#buscarHistoriaModal">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-2">
+                                <label for="cboturno">Turno</label>
+                                <select name="Turno" class="form-control form-control-sm input-validar">
+                                    <option @(Model.Turno == "1" ? "Selected" : "") value="1">Mañana</option>
+                                    <option @(Model.Turno == "0" ? "Selected" : "") value="0">Tarde</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label>Monto Pagado</label>
+                                @Html.TextBoxFor(x => x.Costo, new { @class = "form-control form-control-sm input-validar", autocomplete = "off", placeholder = "0.00"})
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label>Descripción</label><br>
+                                @Html.TextAreaFor(x => x.Descripcion, new { @class = "form-control form-control-sm input-validar", rows = "5", placeholder = "Ingrese el procedimiento realizado (consulta, tratamiento, etc.)" })
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end col-sm-12">
+                            <button type="submit" class="btn btn-primary btn-sm mr-3">Registrar</button>
+                            <a href="~/Procedimiento" class="btn btn-danger btn-sm">Cancelar</a>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="buscarHistoriaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-second-primary">
+                <h5 class="modal-title "  id="exampleModalLabel">Buscar Historia Clínica</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nro Documento : </label>
+                    <input type="text" class="form-control" id="txtNroDNI" autocomplete="off" placeholder="DNI,CI,CE,PASSAPORTE">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="buscarHistoria()">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+       function buscarHistoria() {
+            var nroDNI = $("#txtNroDNI").val();
+
+            // Realizar una solicitud al servidor para buscar la historia clínica con el número de DNI
+            $.ajax({
+                url: '@Url.Action("BuscarHistoriaClinicaPorDNI", "HistoriaClinica")',
+                type: 'GET',
+                data: { nroDNI: nroDNI },
+                success: function (response) {
+                    if (response.success) {
+                        // Si la búsqueda tiene éxito, actualizar la interfaz de usuario con los datos devueltos
+                        $("#txtNroHistoria").val(response.historiaClinica);
+                        $("#buscarHistoriaModal").modal("hide");
+                    } else {
+                        // Si no se encuentra la historia clínica, limpiar la caja de texto
+                        alert(response.message);
+                        $("#txtNroDNI").val('');
+                    
+                    }
+                },
+                error: function () {
+                    // Manejar el error si la solicitud AJAX falla
+                    alert('Hubo un error al buscar la historia clínica. Inténtelo de nuevo más tarde.');
+                }
+            });
+       }
+
+</script>
+
+
+@*<script>
+    // Obtener el elemento de entrada de fecha por su id
+    var fechaInput = document.getElementById("fechaInput");
+
+    // Crear una nueva fecha con la fecha actual del sistema
+    var fechaActual = new Date();
+
+    // Formatear la fecha en el formato esperado (yyyy-MM-dd)
+    var fechaFormateada = fechaActual.getFullYear() + "-" + ((fechaActual.getMonth() + 1) < 10 ? '0' : '') + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate() < 10 ? '0' : '') + fechaActual.getDate();
+
+    // Establecer el valor del campo de entrada de fecha con la fecha actual
+    fechaInput.value = fechaFormateada;
+
+    // Deshabilitar el campo de entrada de fecha
+    fechaInput.disabled = true;
+</script>*@
+

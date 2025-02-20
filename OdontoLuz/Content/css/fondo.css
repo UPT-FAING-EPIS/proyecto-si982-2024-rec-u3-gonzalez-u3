@@ -1,0 +1,10 @@
+﻿
+.fondo{
+    background-color: transparent;
+    width: 100%;
+    overflow-x: hidden;
+    background-attachment: fixed;
+    background-position: center;
+    background-image: url('../img/images/slider1.jpg');
+}    
+  

@@ -1,0 +1,131 @@
+﻿@model OdontoLuz.Models.Usuario
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Clínica La Luz Tacna" />
+    <meta name="autor" content="CLLTacna" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/img/images/favicon.png" />
+    <title>Clínica La Luz Tacna</title>
+
+    <!-- CSS -->
+    <link href="~/Content/css/login-register-lock.css" rel="stylesheet" />
+    <!-- Estilo propio CSS -->
+    <link href="~/Content/css/style.min.css" rel="stylesheet" />
+</head>
+
+
+<!-- Main wrapper -->
+<body class="skin-default card-no-border">
+    <section id="wrapper">
+        <div class="login-register" style="background-image: url('/Content/img/images/login-register.jpg')">
+            <div class="login-box card">
+                <img src="" />
+                <div class="card-body">
+                    <form method="POST" accept-charset="utf-8" class="form-horizontal form-material m-4" id="loginform">
+                        <div class=" form-group">
+                            <br>
+                            <div class="text-center">
+                                <img src="~/Content/img/images/logo.png">
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input class="form-control" type="text" name="NombreUsuario" placeholder="USUARIO" autocomplete="off"
+                                           style="text-transform: uppercase;" required> <!--onkeyup="javascript:this.value=this.value.toUpperCase();"-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input class="form-control" type="password" name="Contraseña" placeholder="CONTRASEÑA" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="d-flex no-block align-items-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Recordar</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <div class="col-xs-12 p-b-20">
+                                    <button class="btn btn-block btn-lg btn-danger btn-rounded" name="" type="submit">Ingresar</button>
+                                </div>
+                                <div>
+                                    <a href="javascript:void(0)" alt="default" data-toggle="modal" data-target="#verticalcenter" class="text-muted"> ¿Olvidaste tu contraseña?</a>
+                                </div>
+                            </div>
+                            <div id="mensajeContainer" class="text-center">
+                                <label class="alert-danger">@TempData["mensaje"]</label>
+                            </div>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Wrapper -->
+    <!-- INICIO MODAL -->
+    <div id="verticalcenter" class="modal" tabindex="-1" role="dialog" aria-labelledby="vcenter" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="vcenter">¿Olvidaste tu contraseña?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>Ponte en contacto con <a href="mailto:sistemastacna@clinicalaluz.com"> sistemas@clinicalaluz.com.pe</a> o llama al <a>(052) 638720.</a> </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CERRAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODAL -->
+    <!-- ----------------------------------------------------------------------------------------------------------------------------- -->
+    <!-- Jquery -->
+    <script type="text/javascript" src="~/Content/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script type="text/javascript" src="~/Content/vendor/bootstrap/js/popper.min.js"></script>
+    <script type="text/javascript" src="~/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Estilo propio JS -->
+    <script type="text/javascript" src="~/Content/vendor/bootstrap/js/custom.min.js"></script>
+
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            document.getElementById("mensajeContainer").style.display = "none";
+        }, 1000); // 1000 milisegundos = 1 segundo
+
+        $(function () {
+            $(".preloader").fadeOut();
+        });
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        // ==============================================================
+        // Login and Recover Password
+        // ==============================================================
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+    </script>
+</body>
+</html>
+
+

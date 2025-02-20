@@ -1,0 +1,181 @@
+﻿@model OdontoLuz.Models.HistoriaClinica
+@{
+    var codigo = ViewBag.otrousuario;
+    if (codigo == 1)
+    {
+        ViewBag.Title = "Create";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout2.cshtml";
+    }
+
+    OdontoLuz.Models.Usuario usuarios = new OdontoLuz.Models.Usuario();
+    var usuario = usuarios.ObtenerDatos((string)Session["nombreusuario"]);
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-18">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Nuevo Historial Clínico</h6>
+        </div>
+        <div class="card-body">
+            @*@using (Html.BeginForm("Edit", "HistoriaClinica", FormMethod.Post, new { id = "frm-categoria" })){*@
+
+           <form action="@Url.Action("Edit", "HistoriaClinica")" method="post">
+
+                <input type="hidden" id="Id_HistoriaClinica" name="Id_HistoriaClinica" value="@(Model.Id_HistoriaClinica)" />
+                <input type="hidden" id="idpaciente" class="form-control" name="Id_Paciente" value="@(Model.Id_Paciente)" />
+                <input type="hidden" id="Id_usuario" class="form-control" name="Id_Usuario" value="@(usuario.Id_Usuario)" />
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label>Nro. Documento</label>
+                                <input type="text" class="form-control form-control-sm input-validar" autocomplete="off" id="documento" name="NroDocumento" placeholder="Dni, Carnet Extranjería, Otros" value="@Model.CodigoHistoria">
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Historia Clinica</label>
+                                <input type="text" class="form-control form-control-sm input-validar" readonly id="historia" name="CodigoHistoria" placeholder="" value="@Model.CodigoHistoria">
+                            </div>
+                            <div class="form-group col-sm-1"></div>
+                            <div class="form-group col-sm-2" style="text-align: right;">
+                                <br />
+                                <label id="fechaSistema" style="text-align: right;"></label>                                
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <label for="txtCorreo">Nombres</label>
+                                <input type="text" class="form-control form-control-sm input-validar" readonly id="nombres" placeholder="">
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label for="txtCorreo">Apellidos</label>
+                                <input type="text" class="form-control form-control-sm input-validar" readonly id="apellidos" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-9">
+                                <label>Domicilio</label>
+                                <input type="text" class="form-control form-control-sm input-validar" readonly id="direccion" placeholder="Av, Calle, Jiron">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end col-sm-9">
+                    <button type="submit" class="btn btn-primary btn-sm mr-3">Registrar</button>
+                    <a href="~/HistoriaClinica" class="btn btn-danger  btn-sm">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    // Obtiene la fecha del sistema
+    var fechaSistema = new Date().toISOString().split('T')[0];
+    // Inserta la fecha del sistema en el label
+    document.getElementById("fechaSistema").innerText = "Fecha: " + fechaSistema;
+    //buscar x dni
+    $(document).ready(function () {
+        var timer;
+        $(document).ready(function () {
+            $('#documento').on('keypress', function (e) {
+                if (e.keyCode === 13) { // Si se presiona la tecla Enter
+                    buscarPaciente();}
+            });
+
+            $(document).on('click', function (){buscarPaciente(); });
+
+
+            function buscarPaciente() {
+                var criterio = $('#documento').val();
+                if (criterio !== '') {
+                    $.ajax({
+                        url: '@Url.Action("BuscarPaciente", "HistoriaClinica")',
+                        type: 'GET',
+                        data: { criterio: criterio },
+                        success: function (response) {
+                            $('#nombres').val(response.Nombres);
+                            $('#apellidos').val(response.Apellidos);
+                            $('#direccion').val(response.Direccion);
+                            $('#idpaciente').val(response.Id_Paciente);
+                            generarCodigoHistoria(response); 
+                        },
+                        error: function () {
+                            alert('El paciente no está registrado.');
+                            limpiarCampos();
+                        }
+                    });
+                } else {
+                    limpiarCampos();
+                }
+            }
+
+            function generarCodigoHistoria(paciente) {
+                var apellido = paciente.Apellidos.substring(0, 3).toUpperCase();
+                var nombre = paciente.Nombres.substring(0, 3).toUpperCase();
+                var idPaciente = paciente.Id_Paciente;
+                var anoSistema = new Date().getFullYear();
+                var codigoHistoria = apellido + idPaciente + nombre + anoSistema;
+                $('#historia').val(codigoHistoria);
+            } 
+
+
+            function limpiarCampos() {
+                $('#documento').val('');
+                $('#nombres').val('');
+                $('#apellidos').val('');
+                $('#direccion').val('');
+                $('#idpaciente').val('');
+            }
+
+        }
+        );
+    });
+
+
+
+
+
+
+    @*$(document).ready(function () {
+    $('#documento').blur(function () {
+        var criterio = $(this).val();
+        if (criterio !== '') {
+            $.ajax({
+                url: '@Url.Action("BuscarPaciente", "HistoriaClinica")',
+                type: 'GET',
+                data: { criterio: criterio },
+                success: function (response) {
+                    $('#nombres').val(response.Nombres);
+                    $('#apellidos').val(response.Apellidos);
+                    $('#direccion').val(response.Direccion);
+                    $('#idpaciente').val(response.Id_Paciente);
+                },
+                error: function () {
+                    alert('El paciente no está registrado.');
+                    limpiarCampos();
+                }
+            });
+        } else {
+            // Limpiar los campos si el número de documento está vacío
+            limpiarCampos();
+        }
+    });
+
+        function limpiarCampos() {
+        $('#documento').val('');
+        $('#nombres').val('');
+        $('#apellidos').val('');
+        $('#direccion').val('');
+        $('#idpaciente').val('');
+    }*@
+
+
+
+</script>

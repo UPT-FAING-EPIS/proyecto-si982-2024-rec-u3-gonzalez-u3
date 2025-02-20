@@ -1,0 +1,64 @@
+﻿@model List<OdontoLuz.Models.Procedimiento>
+@{
+    var codigo = ViewBag.otrousuario;
+    if (codigo == 1)
+    {
+        ViewBag.Title = "Index";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout2.cshtml";
+    }
+}
+
+
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Lista de Procedimiento</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="~/Procedimiento/Create" class="btn btn-success"><i class="fas fa-plus-circle"></i> Nuevo Procedimiento</a>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha</th>
+                                <th>Nro.Historial</th>
+                                <th>Nro.Boleta</th>
+                                <th>Monto Pagado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in Model)
+                            {
+                                <tr>
+                                    <td>@(x.Id_Procedimiento)</td>
+                                    <td>@(x.Fecha.ToString("dd/MM/yyyy"))</td>
+                                    <td>@(x.HistoriaClinica.CodigoHistoria)</td>
+                                    <td>@(x.NroTicket.ToUpper())</td>
+                                    <td>@(x.Costo)</td>
+
+                                    <td>
+                                        <a href="~/Procedimiento/Create/@x.Id_Procedimiento" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                        <button class="btn btn-warning btn-sm"><i class="fas fa-info-circle"></i></button>
+                                        <a onclick="return confirm('Esta Seguro que desea eliminar el registro?')" href="~/Procedimiento/Delete/@x.Id_Procedimiento" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

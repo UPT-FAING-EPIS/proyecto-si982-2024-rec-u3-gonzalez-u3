@@ -1,0 +1,209 @@
+﻿@model OdontoLuz.Models.Paciente
+@{
+    var codigo = ViewBag.otrousuario;
+
+    if (codigo==1)
+    {
+        ViewBag.Title = "Create";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout2.cshtml";      
+    }
+    List<OdontoLuz.Models.TipoDocumento> tipodocumento = ViewBag.tipo;
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-18">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Nuevo Paciente </h6>
+        </div>
+        <div class="card-body">
+
+            <input type="hidden" value="0" id="txtId">
+            <div class="row">
+                <div class="col-sm-12">
+                    @using (Html.BeginForm("Edit", "Paciente", FormMethod.Post, new { id = "frm-categoria" }))
+                    {
+                        @Html.HiddenFor(x => x.Id_Paciente)
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label>Tipo de Documento</label>
+
+                                <select class="form-control form-control-sm" id="tipoDocumento" name="Id_TipoDocumento" required>
+                                    <option @(Model.Id_TipoDocumento == '1' ? "Selected" : "") value="1">Dni</option>
+                                    <option @(Model.Id_TipoDocumento == '2' ? "Selected" : "") value="2">Carnet Extranjeria</option>
+                                    <option @(Model.Id_TipoDocumento == '3' ? "Selected" : "") value="3">Cedula Identidad</option>
+                                    <option @(Model.Id_TipoDocumento == '4' ? "Selected" : "") value="4">Pasaporte</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label>Nro. Documento</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="dniInput" placeholder="Ingrese su documento" pattern="\d{8}" title="Ingrese 8 dígitos numéricos" maxlength="8" value="@Model.NroDocumento" name="NroDocumento"  >
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Nombres</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="nombres" readonly  value="@Model.Nombres" name="Nombres">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Apellidos</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="apellidos" readonly  value="@Model.Apellidos" name="Apellidos">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label>Fecha Nacimiento</label>
+                                <input type="date" class="form-control form-control-sm input-validar" required id="fechanacimiento" value="@Model.FechaNacimiento.ToString("yyyy-MM-dd")" name="FechaNacimiento" onchange="calcularEdad()">
+                            </div>
+                            <div class="form-group col-sm-1">
+                                <label>Edad</label>
+                                <input type="number" class="form-control form-control-sm input-validar" required readonly id="edad"  value="@Model.Edad" name="Edad">
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Nacionalidad</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="gradoinstruccion" placeholder="" value="@Model.Nacionalidad" name="Nacionalidad">
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label>Sexo</label>
+                                <select class="form-control form-control-sm" id="cbosexo" name="Sexo" required>
+                                    <option @(Model.Sexo == "1" ? "Selected" : "") value="1">Masculino</option>
+                                    <option @(Model.Sexo == "0" ? "Selected" : "") value="0">Femenino</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label>Estado Civil</label>
+                                <select class="form-control form-control-sm" id="cboEtado" name="EstadoCivil" required>
+                                    <option @(Model.EstadoCivil == "Soltero" ? "Selected" : "") value="Soltero">Soltero</option>
+                                    <option @(Model.EstadoCivil == "Casado" ? "Selected" : "") value="Casado">Casado</option>
+                                    <option @(Model.EstadoCivil == "Viudo" ? "Selected" : "") value="Viudo">Viudo</option>
+                                    <option @(Model.EstadoCivil == "Divorciado" ? "Selected" : "") value="Divorciado">Divorciado</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label>Teléfono</label>                               
+                                <input type="text" class="form-control form-control-sm input-validar" required  autocomplete="off" id="telefono" pattern="[0-9]{1,9}" title="Ingrese 9 dígitos celular" maxlength="9" placeholder="" value="@Model.Telefono" name="Telefono">                              
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <label>Grado de Instrucción</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="grado" placeholder="" value="@Model.GradoInstruccion" name="GradoInstruccion">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Ocupación</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="grado" placeholder="" value="@Model.Ocupacion" name="Ocupacion">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="txtCorreo">Correo Electronico</label>
+                                <input type="email" class="form-control form-control-sm input-validar" required autocomplete="off" id="txtCorreo" placeholder="" value="@Model.Email" name="Email">
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+
+                            <div class="form-group col-sm-12">
+                                <label>Domicilio</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="domicilio" placeholder="Av, Calle, Jiron" value="@Model.Domicilio" name="Domicilio">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end col-sm-12">
+                            <button type="submit" class="btn btn-primary btn-sm mr-3">Registrar</button>
+                            <a href="~/Paciente" class="btn btn-danger  btn-sm">Cancelar</a>
+                        </div>
+                        <br />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function calcularEdad() {
+        var fechaNacimiento = document.getElementById('fechanacimiento').value;
+        var fechaActual = new Date();
+        var fechaNacimientoFormateada = new Date(fechaNacimiento);
+        var edad = fechaActual.getFullYear() - fechaNacimientoFormateada.getFullYear();
+
+        // Ajustar la edad si el cumpleaños aún no ha ocurrido este año
+        if (fechaNacimientoFormateada.getMonth() > fechaActual.getMonth() ||
+            (fechaNacimientoFormateada.getMonth() === fechaActual.getMonth() && fechaNacimientoFormateada.getDate() > fechaActual.getDate())) {
+            edad--;
+        }
+
+        // Mostrar la edad en el campo de texto correspondiente
+        document.getElementById('edad').value = edad;
+    }
+
+    function controlarCajasTexto() {
+        var tipoDocumento = $('#tipoDocumento').val();
+        if (tipoDocumento === '1') {
+            // If it's DNI, disable the text boxes for names and surnames
+            $('#nombres').prop('readonly', true)
+            $('#apellidos').prop('readonly', true)
+           
+        } else {
+            // If it's not DNI, enable the text boxes for names and surnames
+            $('#nombres').prop('readonly', false).val('');
+            $('#apellidos').prop('readonly', false).val('');
+            $('#dniInput').val(''); // Limpiar DNI
+        }
+    }
+
+    // Define function to query the document
+    function consultarDocumento() {
+        var tipoDocumento = $('#tipoDocumento').val();
+        var documento = $('#dniInput').val();
+        if (tipoDocumento === '1') {
+            // Verify if the document has exactly 8 digits
+            if (documento.length === 8 && /^\d+$/.test(documento)) {
+                $.ajax({
+                   
+                    url: '@Url.Action("ConsultarDNI", "Paciente")',///'/Paciente/ConsultarDNI',
+                    type: 'POST',
+                    data: { dni: documento },
+                    success: function (response) {
+                        if (response.busqueda === 1) {
+                            $('#nombres').val(response.nombres.toLowerCase().replace(/\b\w/g, function (char) {
+                                return char.toUpperCase();
+                            }));
+                            $('#apellidos').val((response.ape_paterno.toLowerCase().replace(/\b\w/g, function (char) {
+                                return char.toUpperCase();
+                            }) + ' ' + response.ape_materno.toLowerCase().replace(/\b\w/g, function (char) {
+                                return char.toUpperCase();
+                            })));
+                            //$('#nombres').val(response.nombres).val(response.nombres.toLowerCase());
+                            //$('#apellidos').val((response.ape_paterno + ' ' + response.ape_materno).toLowerCase());
+                        } else {
+                            // Clear the fields
+                            $('#nombres').val('');
+                            $('#apellidos').val('');
+                            // Show modal with the message
+                            $('#modalMessage').text("El DNI ingresado no es válido o no existe.");
+                            $('#modal').modal('show');
+                            // Clear the DNI text box after showing the message
+                            $('#dniInput').val('');
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert('Error al consultar el documento');
+                    }
+                });
+            }
+        }
+    }
+
+    // Add input event to the text box to call the consultarDocumento() function
+    $('#dniInput').on('input', consultarDocumento);
+    // Add change event to the select to call the controlarCajasTexto() function
+    $('#tipoDocumento').on('change', controlarCajasTexto);
+
+    // Call controlarCajasTexto() to ensure the initial state is correct
+    controlarCajasTexto();
+
+</script>

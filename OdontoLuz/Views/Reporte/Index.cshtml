@@ -1,0 +1,88 @@
+﻿@model List<OdontoLuz.Models.Procedimiento>
+@{
+    ViewBag.Title = "Index";
+    List<OdontoLuz.Models.Paciente> pacientes = ViewBag.paciente;
+    List<OdontoLuz.Models.Usuario> usuarios = ViewBag.usuario;
+    var costoTotal = ViewBag.costototal as decimal?;
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Lista de Pacientes</h6>
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="form-group col-sm-12"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <img src="~/Content/img/images/logo1.png" alt="logo" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-7">
+                    <label style="text-align: center; font-weight: bold; font-size: 1.2em;">REPORTE DE ATENCIONES</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10"></div>
+                <div class="col-sm-2">
+                    <label>FECHA: 24/03/2024</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Fecha Registro</th>
+                                <th>Nro.Boleta</th>
+                                <th>Historia Clinica</th>
+                                <th>Documento</th>
+                                <th>Paciente</th>
+                                <th>Celular</th>
+                                <th>Edad</th>
+                                <th>Usuario</th>
+                                @*<th>Tratamiento</th>*@
+                                <th>Turno</th>
+                                <th>Precio</th>
+                               
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var x in Model)
+                            {
+                                <tr>
+                                    <td>@(x.Fecha.ToString("dd/MM/yyyy"))
+                                    <td>@(x.NroTicket)</td>
+                                    <td>@(x.HistoriaClinica.CodigoHistoria)</td>
+                                    @foreach (var t in pacientes)
+                                    {
+                                        if (x.HistoriaClinica.Id_Paciente.Equals(t.Id_Paciente))
+                                        {
+                                            <td>@(t.NroDocumento)</td>                                         
+                                            <td>@(t.Nombres.Split(' ')[0] + " " + t.Apellidos)</td>
+                                            <td>@(t.Telefono)</td>
+                                            <td>@(t.Edad)</td>
+                                        }
+                                    }
+                                    <td>@(x.Usuario.Nombres.Split(' ')[0] + " " + x.Usuario.Apellidos)</td>                                  
+                                    @*<td>@(x.Descripcion)</td>*@
+                                    <td>@(x.Turno.Equals("1") ? "Mañana" : "Tarde")</td>
+                                    <td>S/. @(x.Costo)</td>
+                                </tr>
+                            }
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

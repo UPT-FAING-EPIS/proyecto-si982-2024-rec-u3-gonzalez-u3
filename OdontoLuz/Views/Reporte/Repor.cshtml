@@ -1,0 +1,127 @@
+﻿
+@{
+    Layout = null;
+    List<OdontoLuz.Models.Procedimiento> procedi = ViewBag.procedimiento;
+    List<OdontoLuz.Models.Paciente> pacientes = ViewBag.paciente;
+    List<OdontoLuz.Models.Usuario> usuarios = ViewBag.usuario;
+    var costoTotal = ViewBag.costototal as decimal?;    
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/vendor/fontawesome-free/css/all.css" rel="stylesheet" />
+    <!-- Custom styles for this template-->
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/vendor/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/vendor/sweetalert/sweetalert.css" rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Reporte de Atenciones</title>
+    <link rel="stylesheet" href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/vendor/datatables/extensiones/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="~/Content/vendor/datatables/extensiones/css/buttons.dataTables.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- DataTales Example -->
+        <div class="">
+            <div class="">
+                <h6 class="card-body"></h6>
+            </div>
+            <div class="">
+                <div class="row">
+                    <div class="form-group col-sm-12"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img src="~/Content/img/images/logo1.png" alt="logo" />
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-12" style="text-align: center;">
+                        <label style="font-weight: bold; font-size: 1.2em;">REPORTE DE ATENCIONES</label>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-sm-12">
+                        <label id="fechaLabel" style="float: right;"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table" id="table" cellspacing="0" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Nro.Boleta</th>
+                                    <th>Historia Clinica</th>
+                                    <th>Documento</th>
+                                    <th>Paciente</th>
+                                    <th>Celular</th>
+                                    <th>Edad</th>
+                                    <th>Usuario</th>
+                                    <th>Turno</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var x in procedi)
+                                {
+                                    <tr>
+                                        <td>@(x.Fecha.ToString("dd/MM/yyyy"))
+                                        <td>@(x.NroTicket)</td>
+                                        <td>@(x.HistoriaClinica.CodigoHistoria)</td>
+                                        @foreach (var t in pacientes)
+                                        {
+                                            if (x.HistoriaClinica.Id_Paciente.Equals(t.Id_Paciente))
+                                            {
+                                                <td>@(t.NroDocumento)</td>
+                                                <td>@(t.Nombres.Split(' ')[0] + " " + t.Apellidos)</td>
+                                                <td>@(t.Telefono)</td>
+                                                <td>@(t.Edad)</td>
+                                            }
+                                        }
+                                        <td>@(x.Usuario.Nombres.Split(' ')[0] + " " + x.Usuario.Apellidos.Split(' ')[0])</td>
+                                        <td>@(x.Turno.Equals("1") ? "Mañana" : "Tarde")</td>
+                                        <td>S/. @(x.Costo)</td>
+                                    </tr>
+                                 }
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="form-group col-sm-12"></div>
+                        </div>
+                        <div class="row">                            
+                            <div class="col-sm-12" style="text-align: right;">
+                                <label style="font-weight: bold;">TOTAL: S/.  @costoTotal </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+    @*===============================================================-->*@
+    <script src="~/Content/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/vendor/datatables/extensiones/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/vendor/datatables/extensiones/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/js/vistas/datatables-demo.js"></script>
+</body>
+</html>
+
+
+<script>
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+    // Formatear la fecha según tus preferencias
+    const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const fechaFormateada = fechaActual.toLocaleDateString('es-ES', opciones);
+
+    // Actualizar el contenido de la etiqueta <label>
+    const labelFecha = document.getElementById('fechaLabel');
+    labelFecha.textContent = fechaFormateada;
+</script>

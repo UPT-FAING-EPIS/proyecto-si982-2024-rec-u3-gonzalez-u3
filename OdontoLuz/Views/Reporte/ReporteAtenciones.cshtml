@@ -1,0 +1,123 @@
+﻿
+@{
+    var codigo = ViewBag.otrousuario;
+    if (codigo == 1)
+    {
+        ViewBag.Title = "ReporteAtenciones";       
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout2.cshtml";
+    }
+    List<OdontoLuz.Models.Procedimiento> procedi = ViewBag.procedimiento;
+    List<OdontoLuz.Models.Paciente> pacientes = ViewBag.paciente;
+    List<OdontoLuz.Models.Usuario> usuarios = ViewBag.usuario;
+    var costoTotal = ViewBag.costototal as decimal?;
+
+}
+
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="">
+            <h6 class=""></h6>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    <a href="@Url.Action("Print", "Reporte")" class="btn btn-outline-primary" target="_blank">
+                        <i class="fas fa-print">  Imprimir</i> <!-- Icono de impresora -->
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <img src="~/Content/img/images/logo1.png" alt="logo" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-7">
+                    <label style="text-align: center; font-weight: bold; font-size: 1.2em;">REPORTE DE ATENCIONES</label>
+                </div>
+            </div>
+            <div class="row">               
+                <div class="col-sm-12">
+                    <label id="fechaLabel" style="float: right;"></label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table" id="table" cellspacing="0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Nro.Boleta</th>
+                                <th>Historia Clinica</th>
+                                <th>Documento</th>
+                                <th>Paciente</th>
+                                <th>Celular</th>
+                                <th>Edad</th>
+                                <th>Usuario</th>
+                                <th>Turno</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in procedi)
+                            {
+                                <tr>
+                                    <td>@(x.Fecha.ToString("dd/MM/yyyy"))
+                                    <td>@(x.NroTicket)</td>
+                                    <td>@(x.HistoriaClinica.CodigoHistoria)</td>
+                                    @foreach (var t in pacientes)
+                                    {
+                                        if (x.HistoriaClinica.Id_Paciente.Equals(t.Id_Paciente))
+                                        {
+                                            <td>@(t.NroDocumento)</td>
+                                            <td>@(t.Nombres.Split(' ')[0] + " " + t.Apellidos)</td>
+                                            <td>@(t.Telefono)</td>
+                                            <td>@(t.Edad)</td>
+                                        }
+                                    }
+                                    <td>@(x.Usuario.Nombres.Split(' ')[0] + " " + x.Usuario.Apellidos.Split(' ')[0])</td>
+                                    <td>@(x.Turno.Equals("1") ? "Mañana" : "Tarde")</td>
+                                    <td>S/. @(x.Costo)</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="form-group col-sm-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10"></div>
+                        <div class="col-sm-2">
+                            <label style="text-align: center; font-weight: bold">TOTAL: @costoTotal </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+    // Formatear la fecha según tus preferencias
+    const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const fechaFormateada = fechaActual.toLocaleDateString('es-ES', opciones);
+
+    // Actualizar el contenido de la etiqueta <label>
+    const labelFecha = document.getElementById('fechaLabel');
+    labelFecha.textContent =  fechaFormateada;
+</script>

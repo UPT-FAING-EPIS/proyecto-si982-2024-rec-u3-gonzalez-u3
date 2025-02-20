@@ -1,0 +1,201 @@
+﻿@model OdontoLuz.Models.Usuario
+@{
+    ViewBag.Title = "Create";
+    List<OdontoLuz.Models.TipoUsuario> tipousuarios = ViewBag.tipo;
+
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Nuevo Usuario</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    @using (Html.BeginForm("Edit", "Usuario", FormMethod.Post, new { id = "frm-categoria" }))
+                    {
+                        @Html.HiddenFor(x => x.Id_Usuario)
+
+                        <div class="form-row">
+                            @*<div class="form-group col-sm-2">
+                                    <label>Dni</label>
+                                    @Html.TextBoxFor(x => x.NroDocumento, new { @class = "form-control form-control-sm input-validar", autocomplete = "off", @id = "dniInput" })
+                                    @Html.ValidationMessageFor(x => x.NroDocumento, null, new { @class = "label label-warning" })
+                                </div>*@
+                            <div class="form-group col-sm-2">
+                                <label>Dni</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="dniInput" placeholder="Ingrese su documento" pattern="\d{8}" title="Ingrese 8 dígitos numéricos" maxlength="8" value="@Model.NroDocumento" name="NroDocumento">
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Nombres</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="nombres" readonly value="@Model.Nombres" name="Nombres">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Apellidos</label>
+                                <input type="text" class="form-control form-control-sm input-validar" required autocomplete="off" id="apellidos" readonly value="@Model.Apellidos" name="Apellidos">
+                            </div>
+                            @*<div class="form-group col-sm-3">
+                                    <label>Nombres</label>
+                                    @Html.TextBoxFor(x => x.Nombres, new { @class = "form-control form-control-sm input-validar",@readonly = "readonly", autocomplete = "off", @id= "nombres" })
+                                    @Html.ValidationMessageFor(x => x.Nombres, null, new { @class = "label label-danger" })
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label>Apellidos</label>
+                                    @Html.TextBoxFor(x => x.Apellidos, new { @class = "form-control form-control-sm input-validar", @readonly = "readonly", autocomplete = "off", @id= "apellidos" })
+                                    @Html.ValidationMessageFor(x => x.Apellidos, null, new { @class = "label label-danger" })
+                                </div>*@
+
+                            <div class="form-group col-sm-4">
+                                <label>Correo Electronico</label>
+                                @Html.TextBoxFor(x => x.CorreoElectronico, new { @class = "form-control form-control-sm input-validar", autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.CorreoElectronico, null, new { @class = "label label-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label>Telefono</label>
+                                @Html.TextBoxFor(x => x.Telefono, new { @class = "form-control form-control-sm input-validar", autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.Telefono, null, new { @class = "label label-danger" })
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Cargo</label>
+                                @Html.TextBoxFor(x => x.Cargo, new { @class = "form-control form-control-sm input-validar", autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.Cargo, null, new { @class = "label label-danger" })
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label for="cboEstado">Estado</label>
+                                <select name="ESTADO" class="form-control form-control-sm input-validar">
+                                    <option @(Model.Estado == "1" ? "Selected" : "") value="1">Activo</option>
+                                    <option @(Model.Estado == "0" ? "Selected" : "") value="0">Inactivo</option>
+                                </select>
+                                @Html.ValidationMessageFor(x => x.Estado, null, new { @class = "label label-danger" })
+                            </div>
+
+                            <div class="form-group col-sm-3">
+                                @Html.LabelFor(x => x.TipoUsuario)
+                                <select name="Id_tipousuario" class="form-control form-control-sm input-validar">
+                                    <option @(Model.Id_TipoUsuario.Equals("") ? "selected" : "") value="">--Seleccione--</option>
+
+                                    @foreach (var t in tipousuarios)
+                                    {
+                                        <option @(Model.Id_TipoUsuario.Equals(t.Id_TipoUsuario) ? "selected" : "")
+                                                value="@t.Id_TipoUsuario">
+                                            @t.Descripcion
+                                        </option>
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(x => x.Id_TipoUsuario, null, new { @class = "label label-danger" })
+
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label>Nombre Usuario</label>
+                                @Html.TextBoxFor(x => x.NombreUsuario, new { @class = "form-control form-control-sm input-validar", autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.NombreUsuario, null, new { @class = "label label-danger" })
+                            </div>
+
+                            <div class="form-group col-sm-3">
+                                <label>Contraseña</label>
+                                @Html.TextBoxFor(x => x.Contraseña, new { @class = "form-control form-control-sm input-validar", autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.Contraseña, null, new { @class = "label label-danger" })
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end col-sm-12">
+                            <button type="submit" class="btn btn-primary btn-sm mr-3">Registrar</button>
+                            <a href="~/Usuario" class="btn btn-danger  btn-sm">Cancelar</a>
+                        </div>
+                        <br />
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#dniInput').on('blur', consultarDocumento);
+
+        function consultarDocumento() {
+            var documento = $('#dniInput').val();
+            if (documento.length === 8 && /^\d+$/.test(documento)) {
+                $.ajax({
+                    url: '@Url.Action("ConsultarDNI", "Usuario")',
+                    type: 'POST',
+                    data: { dni: documento },
+                    success: function (response) {
+                        if (response.busqueda === 1) {
+                            $('#nombres').val(response.nombres.toLowerCase().replace(/\b\w/g, function (char) {
+                                return char.toUpperCase();
+                            }));
+                            $('#apellidos').val((response.ape_paterno.toLowerCase().replace(/\b\w/g, function (char) {
+                                return char.toUpperCase();
+                            }) + ' ' + response.ape_materno.toLowerCase().replace(/\b\w/g, function (char) {
+                                return char.toUpperCase();
+                            })));
+                        } else {
+                            limpiarCampos();
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert('Error al consultar el documento');
+                    }
+                });
+            } else {
+                limpiarCampos();
+            }
+        }
+
+        function limpiarCampos() {
+            $('#nombres').val('');
+            $('#apellidos').val('');
+        }
+    });
+</script>
+
+
+
+@*<script>
+        $(document).ready(function () {
+            $('#dniInput').on('blur', consultarDocumento);
+
+            function consultarDocumento() {
+                var documento = $('#dniInput').val();
+                if (documento.length === 8 && /^\d+$/.test(documento)) {
+                    $.ajax({
+                        url: '@Url.Action("ConsultarDNI", "Usuario")',
+                        type: 'POST',
+                        data: { dni: documento },
+                        success: function (response) {
+                            if (response.busqueda === 1) {
+                                $('#nombres').val(response.nombres.toLowerCase().replace(/\b\w/g, function (char) {
+                                    return char.toUpperCase();
+                                }));
+                                $('#apellidos').val((response.ape_paterno.toLowerCase().replace(/\b\w/g, function (char) {
+                                    return char.toUpperCase();
+                                }) + ' ' + response.ape_materno.toLowerCase().replace(/\b\w/g, function (char) {
+                                    return char.toUpperCase();
+                                })));
+                            } else {
+                                // Clear the fields
+                                $('#nombres').val('');
+                                $('#apellidos').val('');
+                                // Show modal with the message
+                                $('#dniInput').val('');
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('Error al consultar el documento');
+                        }
+                    });
+                }
+            }
+        });
+    </script>*@

@@ -1,0 +1,75 @@
+﻿@model List<OdontoLuz.Models.Paciente>
+@{
+    var codigo = ViewBag.otrousuario;
+
+    if (codigo == 1)
+    {
+        ViewBag.Title = "Index";       
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout2.cshtml";
+    }
+    List<OdontoLuz.Models.TipoDocumento> tipodocumento = ViewBag.tipo;
+}
+
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Lista de Pacientes</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="~/Paciente/Create" class="btn btn-success"><i class="fas fa-user-plus"></i> Nuevo Paciente</a>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nro. Documento</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Edad</th>
+                                <th>Sexo</th>
+                                <th>Domicilio</th>
+                                <th>Telefono</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int item = 1;
+                            }
+
+                            @foreach (var x in Model)
+                            {                               
+                                <tr>
+                                    <td>@(item++)</td>
+                                    <td>@x.NroDocumento</td>
+                                    <td>@x.Nombres</td>
+                                    <td>@x.Apellidos</td>
+                                    <td>@x.Edad</td>
+                                    <td>@(x.Sexo == "1" ? "Masculino" : "Femenino")</td>
+                                    <td>@x.Telefono</td>
+                                    <td>@x.Domicilio</td>
+                                    <td>
+                                        <a href="~/Paciente/Create/@x.Id_Paciente" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                        <button class="btn btn-warning btn-sm"><i class="fas fa-info-circle"></i></button>
+                                        <a onclick="return confirm('Esta Seguro que desea eliminar el registro?')" href="~/Paciente/Delete/@x.Id_Paciente" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

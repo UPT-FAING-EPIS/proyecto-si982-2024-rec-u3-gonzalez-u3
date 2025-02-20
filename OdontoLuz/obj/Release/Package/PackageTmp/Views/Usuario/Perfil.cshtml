@@ -1,0 +1,113 @@
+﻿@model OdontoLuz.Models.Usuario
+@{
+    ViewBag.Title = "Perfil";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <form>
+                <input type="hidden" id="Id_usuario" class="form-control" name="idUsuario" value="@(Model.Id_Usuario)" />
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-second-primary">
+                        <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-user"></i> Mis Datos</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <img id="imgFoto" src="~/Content/img/images/news-image1.jpg" class="rounded mx-auto d-block" style="width: 200px; height: 200px;">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label for="txtNombre">Nombre</label>
+                                <input type="text" class="form-control form-control-sm" readonly id="txtNombre" value="@Model.Nombres @Model.Apellidos">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label for="txtCorreo">Correo</label>
+                                <input type="email" class="form-control form-control-sm" readonly id="txtCorreo" value="@Model.CorreoElectronico">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label for="txTelefono">Telefono</label>
+                                <input type="text" class="form-control form-control-sm" readonly id="txTelefono" value="@Model.Telefono">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label for="txtRol">Rol</label>
+                                <input type="text" class="form-control form-control-sm" readonly id="txtRol" value="@Model.Cargo">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">                         
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-4">
+            <form action="@Url.Action("CambiarContraseña", "Usuario")" method="post">
+                <input type="hidden" id="Id_usuario" class="form-control" name="idUsuario" value="@(Model.Id_Usuario)" />
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-second-primary">
+                        <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-key"></i> Cambiar Contraseña</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label for="txtClaveActual">Contraseña Actual</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-sm input-validar" readonly id="txtClaveActual" name="ClaveActual" value="@Model.Contraseña">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="togglePassword">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label for="txtClaveNueva">Nueva Contraseña</label>
+                                <input type="password" class="form-control form-control-sm input-validar" id="txtClaveNueva" name="nuevaContraseña" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label>Nombre Usuario</label>
+                                <input type="text" class="form-control form-control-sm" readonly id="txtRol" value="@Model.NombreUsuario">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-success btn-sm btn-block">Guardar Cambios</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        var passwordInput = document.getElementById('txtClaveActual');
+        var icon = this.querySelector('i');
+
+        if (passwordInput.getAttribute('type') === 'password') {
+            passwordInput.setAttribute('type', 'text');
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.setAttribute('type', 'password');
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
