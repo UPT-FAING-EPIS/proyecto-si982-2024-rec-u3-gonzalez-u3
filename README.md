@@ -18,13 +18,6 @@ Este proyecto tiene como objetivo gestionar los datos de pacientes y usuarios en
 
 Para instalar y configurar el proyecto, sigue estos pasos:
 
-1. Clona el repositorio: `git clone https://github.com/tu_usuario/tu_repositorio.git`
-2. Instala las dependencias: `npm install`
-3. Configura las variables de entorno según tus necesidades.
-
-## Uso
-
-Para iniciar la aplicación, ejecuta:
-
-```bash
-npm start
+1. Clona el repositorio: `[git clone https://github.com/tu_usuario/tu_repositorio.git](https://github.com/UPT-FAING-EPIS/proyecto-si982-2024-rec-u3-gonzalez-u3.git)`
+2. Abrir el proyecto con Visual Studio
+3. Hacerle click a Play
