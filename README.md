@@ -20,4 +20,12 @@ Para instalar y configurar el proyecto, sigue estos pasos:
 
 1. Clona el repositorio: `[git clone https://github.com/UPT-FAING-EPIS/proyecto-si982-2024-rec-u3-gonzalez-u3.git`
 2. Abrir el proyecto con Visual Studio
-3. Hacerle click a Play
+3. Hacerle click en ejecutar
+
+
+## Uso
+Ingresar al siguiente link
+https://laluzodontologia.azurewebsites.net/
+
+e ingresar con credenciales
+
