@@ -1,0 +1,32 @@
+name: Build and Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+      - proyecto
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Install DocFx
+      run: dotnet tool install -g docfx
+
+    - name: Build documentation
+      run: docfx build
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_site
